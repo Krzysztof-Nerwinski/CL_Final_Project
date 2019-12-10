@@ -525,8 +525,8 @@ CREATE TABLE public.timer_timer (
     employee_id integer NOT NULL,
     task_id integer NOT NULL,
     is_active boolean NOT NULL,
-    pause_end timestamp with time zone,
-    pause_time timestamp with time zone
+    pause_time_end timestamp with time zone,
+    pause_time_start timestamp with time zone
 );
 
 
@@ -801,6 +801,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 20	timer	0003_auto_20191210_1401	2019-12-10 15:01:38.321516+01
 21	timer	0004_populate_db	2019-12-10 18:25:27.270402+01
 22	timer	0005_auto_20191210_1708	2019-12-10 18:25:27.351636+01
+23	timer	0006_auto_20191210_1751	2019-12-10 18:51:48.809661+01
 \.
 
 
@@ -1349,7 +1350,7 @@ COPY public.timer_task (id, name, description) FROM stdin;
 -- Data for Name: timer_timer; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.timer_timer (id, start_time, end_time, added_on, case_id, client_id, employee_id, task_id, is_active, pause_end, pause_time) FROM stdin;
+COPY public.timer_timer (id, start_time, end_time, added_on, case_id, client_id, employee_id, task_id, is_active, pause_time_end, pause_time_start) FROM stdin;
 \.
 
 
@@ -1413,7 +1414,7 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 11, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 22, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 23, true);
 
 
 --

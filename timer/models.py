@@ -53,7 +53,7 @@ class Timer(models.Model):
     pause_time_start = models.DateTimeField(null=True)
     pause_time_end = models.DateTimeField(null=True)
     added_on = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     employee = models.ForeignKey(User, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     case = models.ForeignKey(Case, on_delete=models.CASCADE)

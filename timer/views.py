@@ -8,3 +8,9 @@ class TimerView(View):
     def get(self, request):
         form = TimerOnForm()
         return render(request, 'timer.html', {'form': form})
+
+    def post(self, request):
+        form = TimerOnForm(request.POST)
+        if form.is_valid():
+            timer = form.save()
+        return render(request, 'timer.html', {'timer': timer})

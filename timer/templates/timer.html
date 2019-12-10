@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% if form %}
     <h1>Timer</h1>
     <form method="post"> {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Timer Start">
-
     </form>
-
+    {% else %}
+        <h1>Twój licznik jest aktywny</h1>
+        <ul>
+            <li>Klient: {{ timer.client }}</li>
+            <li>Projekt: {{ timer.case }}</li>
+            <li>Zadanie: {{ timer.task }}</li>
+        </ul>
+    {% endif %}
 {% endblock %}
