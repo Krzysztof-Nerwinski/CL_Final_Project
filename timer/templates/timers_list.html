@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for timer in timers %}
+        {{ timer.id }}
+    {% endfor %}
+{% endblock %}

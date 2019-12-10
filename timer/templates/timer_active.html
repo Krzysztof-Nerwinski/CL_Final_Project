@@ -1,0 +1,8 @@
+<h1>Twój licznik jest aktywny od:
+<h3>{{ timer.start_time }}</h3></h1>
+<ul>
+    <li><h3>Klient:</h3> {{ timer.client }}</li>
+    <li><h3>Projekt:</h3> {{ timer.case }}</li>
+    <li><h3>Zadanie:</h3> {{ timer.task }}</li>
+</ul>
+<a href="timer/stop/{{ timer.id }}">Zatrzymaj timer</a>
