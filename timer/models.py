@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -12,8 +13,7 @@ class Client(models.Model):
     tax_no = models.CharField(max_length=32)
 
     def __str__(self):
-        return f"Client name: {self.name}"
-
+        return self.name
 
 
 class Task(models.Model):
@@ -21,7 +21,7 @@ class Task(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return f"Task name: {self.name}, description: {self.description}"
+        return self.name
 
 
 class Case(models.Model):
@@ -32,22 +32,28 @@ class Case(models.Model):
     tasks = models.ManyToManyField(Task, through="CaseTasks")
 
     def __str__(self):
-        return f"Case {self.name} for client: {self.client}. Description: {self.description}"
+        return self.name
 
 
 class CaseTasks(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     case = models.ForeignKey(Case, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2, null=True)
 
     def __str__(self):
-        return f"Price per hour for {self.case} - {self.task} is {self.price}"
+        if self.price is not None:
+            return f"Price per hour for: {self.case} - {self.task} is {self.price}"
+        else:
+            return f"No price defined for: {self.case} - {self.task}"
 
 
 class Timer(models.Model):
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=timezone.now)
+    end_time = models.DateTimeField(null=True)
+    pause_time_start = models.DateTimeField(null=True)
+    pause_time_end = models.DateTimeField(null=True)
     added_on = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=False)
     employee = models.ForeignKey(User, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     case = models.ForeignKey(Case, on_delete=models.CASCADE)
@@ -60,4 +66,4 @@ class Timer(models.Model):
 
     @property
     def duration(self):
-        return self.end_time - self.start_time
+        return (self.end_time - self.start_time) - (self.pause_time_end - self.pause_time_start)
