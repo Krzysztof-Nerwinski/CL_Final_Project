@@ -1,0 +1,2 @@
+INSERT INTO public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) VALUES (1, '2019-12-10 11:38:11.577264', '2', 'test_user', 1, '[{"added": {}}]', 4, 1);
+INSERT INTO public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) VALUES (2, '2019-12-10 11:40:08.450229', '2', 'test_user', 3, '', 4, 1);

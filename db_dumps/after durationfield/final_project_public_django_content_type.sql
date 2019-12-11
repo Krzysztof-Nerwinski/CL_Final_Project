@@ -1,0 +1,11 @@
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (1, 'admin', 'logentry');
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (2, 'auth', 'permission');
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (3, 'auth', 'group');
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (4, 'auth', 'user');
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (5, 'contenttypes', 'contenttype');
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (6, 'sessions', 'session');
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (7, 'timer', 'case');
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (8, 'timer', 'client');
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (9, 'timer', 'task');
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (10, 'timer', 'timer');
+INSERT INTO public.django_content_type (id, app_label, model) VALUES (11, 'timer', 'casetasks');
