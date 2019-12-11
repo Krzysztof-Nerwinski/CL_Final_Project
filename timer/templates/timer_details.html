@@ -1,0 +1,91 @@
+{#{% extends 'base.html' %}#}
+{#{% block title %}Lista wpisów {% endblock %}#}
+{#{% block content %}#}
+{#    <h3>Lista wpisów</h3>#}
+{#    {% for timer in timers %}#}
+{#        #}
+{#    {% empty %}#}
+{#        <h5>Brak wpisów dla obecnego użytkownika</h5>#}
+{#    {% endfor %}#}
+{#{% endblock %}#}
+{% extends "base.html" %}
+{% block title %}Timer id - {{ object.id }}{% endblock %}
+{% block content %}
+<div class="dashboard-content border-dashed p-3 m-4 view-height">
+    <div class="mt-4 ml-4 mr-4">
+        <div class="row border-bottom border-3">
+            <div class="col"><h3 class="color-header text-uppercase">Timer id - {{ object.id }}</h3></div>
+            <div class="col d-flex justify-content-end mb-2">
+                <a href="{% url 'timer_edit' object.id %}" class="btn btn-warning rounded-0 pt-0 pb-0 pr-4 pl-4 mr-1">Edytuj wpis</a>
+                <a href="{% url 'timer_list' %}" class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Powrót</a>
+            </div>
+        </div>
+        <table class="table borderless">
+            <tbody>
+            <tr class="d-flex">
+                <th scope="row" class="col-2">Początek</th>
+                <td class="col-7">{{ object.start_time }}</td>
+            </tr>
+            {% if not timer.is_active %}
+            <tr class="d-flex">
+                <th scope="row" class="col-2">Koniec</th>
+                <td class="col-7">{{ object.end_time }}</td>
+            </tr>
+            {% endif %}
+            <tr class="d-flex">
+                <th scope="row" class="col-2">Czas przerw:</th>
+                {% if object.pause_duration_total is None %}
+                    <td class="col-7">Brak przerw</td>
+                {% else %}
+                    <td class="col-7">{{ object.pause_duration_total }}</td>
+                {% endif %}
+            </tr>
+             <tr class="d-flex">
+                <th scope="row" class="col-2">Klient</th>
+                 <td class="col-7">{{ object.client }}</td>
+            </tr>
+            <tr class="d-flex">
+                <th scope="row" class="col-2">Projekt</th>
+                 <td class="col-7">{{ object.case }}</td>
+            </tr>
+            <tr class="d-flex">
+                <th scope="row" class="col-2">Zadanie</th>
+                 <td class="col-7">{{ object.task }}</td>
+            </tr>
+            <tr class="d-flex">
+                <th scope="row" class="col-2">Data utworzenia</th>
+                 <td class="col-7">{{ object.added_on }}</td>
+            </tr>
+
+
+            </tbody>
+        </table>
+
+        <div class="row d-flex">
+            <div class="col border-bottom border-3">
+                <h3 class="text-uppercase">Faktyczny czas pracy:</h3>
+            </div>
+{#            <div class="col-2"></div>#}
+{#            <div class="col-5 border-bottom border-3">#}
+{#                <h3 class="text-uppercase">Czas przerw:</h3>#}
+{#            </div>#}
+{#            <div class="col-5 border-bottom border-3">#}
+{#                <h3 class="text-uppercase">Faktyczny czas pracy:</h3>#}
+{#            </div>#}
+        </div>
+
+        <div class="row d-flex">
+            <div class="col p-4">
+                <p>{{ object.duration }} </p>
+            </div>
+{#            <div class="col-2"></div>#}
+{#            <div class="col-5 p-4">#}
+{#                <p>{{ object.pause_duration_total }} </p>#}
+{#            </div>#}
+{#            <div class="col-5 p-4">#}
+{#                <p>{{ object.duration }} </p>#}
+{#            </div>#}
+        </div>
+    </div>
+</div>
+{% endblock content %}

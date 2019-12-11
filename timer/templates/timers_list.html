@@ -1,6 +1,80 @@
-{% extends 'base.html' %}
+{#{% extends 'base.html' %}#}
+{#{% block title %}Lista wpisów {% endblock %}#}
+{#{% block content %}#}
+{#    <h3>Lista wpisów</h3>#}
+{#    {% for timer in timers %}#}
+{#        #}
+{#    {% empty %}#}
+{#        <h5>Brak wpisów dla obecnego użytkownika</h5>#}
+{#    {% endfor %}#}
+{#{% endblock %}#}
+{% extends "base.html" %}
+{% block title %}Lista wpisów{% endblock %}
 {% block content %}
-    {% for timer in timers %}
-        {{ timer.id }}
-    {% endfor %}
-{% endblock %}
+<div class="dashboard-content border-dashed p-3 m-4 view-height">
+
+    <div class="row border-bottom border-3 p-1 m-1">
+        <div class="col noPadding">
+            <h3 class="color-header text-uppercase">Lista Wpisów</h3>
+        </div>
+{#            <div class="d-flex justify-content-end mb-2 pl-1">#}
+{#                <a href=""#}
+{#                   class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj#}
+{#                    plan</a>#}
+{#            </div>#}
+{#            <div class="d-flex justify-content-end mb-2 pl-1">#}
+{#                <a href="" class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj#}
+{#                    posiłek do planu</a>#}
+{#            </div>#}
+    </div>
+
+    <div class="schedules-content">
+        <table class="table border-bottom">
+            <thead>
+            <tr class="d-flex">
+                <th class="col-2">Początek</th>
+                <th class="col-2">Czas trwania</th>
+                <th class="col-6">Klient</th>
+                <th class="col-2 center">Akcje</th>
+            </tr>
+            </thead>
+            <tbody class="text-color-lighter">
+            {% for timer in timers %}
+                <tr class="d-flex">
+                    <td class="col-2">{{ timer.start_time }}</td>
+                    {% if timer.duration is None %}
+                        <td class="col-2">Timer aktywny</td>
+                    {% else %}
+                        <td class="col-2">{{ timer.duration }}</td>
+                    {% endif %}
+                    <td class="col-6">{{ timer.client }}</td>
+                    <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
+{#                            <a href="#" class="btn btn-danger rounded-0 text-light m-1">Usuń</a>#}
+                        <a href="{% url 'timer_details' timer.id %}"
+                           class="btn btn-info rounded-0 text-light m-1">Szczegóły</a>
+                        <a href="{% url 'timer_edit' timer.id %}"
+                           class="btn btn-warning rounded-0 text-light m-1">Edytuj</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if is_paginated %}
+            <div class="pagination">
+                <span class="page-links">
+                    {% if page_obj.has_previous %}
+                        <a href="{% url 'timer_list' %}?page={{ page_obj.previous_page_number }}">Poprzednia strona</a>
+                    {% endif %}
+                    <span class="page-current">
+                        Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="{% url 'timer_list' %}?page={{ page_obj.next_page_number }}">Następna strona</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

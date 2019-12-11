@@ -5,4 +5,15 @@
     <li><h3>Projekt:</h3> {{ timer.case }}</li>
     <li><h3>Zadanie:</h3> {{ timer.task }}</li>
 </ul>
-<a href="timer/stop/{{ timer.id }}">Zatrzymaj timer</a>
+{% if not timer.pause_active %}
+<a href="{% url 'timer_stop' timer.id %}">
+    <button  class="btn btn-stop" >TIMER STOP</button>
+</a>
+<a href="{% url 'timer_pause' timer.id %}">
+    <button class="btn btn-pause">timer PAUZA</button>
+</a>
+{% else %}
+<a href="{% url 'timer_pause' timer.id%}">
+    <button class="btn btn-resume">timer WZNÓW</button>
+</a>
+{% endif %}

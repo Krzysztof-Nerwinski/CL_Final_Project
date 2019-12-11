@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Timer id - {{ object.id }}{% endblock %}
+{% block content %}
+<div class="dashboard-content border-dashed p-3 m-4 view-height">
+    <div class="mt-4 ml-4 mr-4">
+        <div class="row border-bottom border-3">
+            <div class="col"><h3 class="color-header text-uppercase">Timer id - {{ object.id }}</h3></div>
+            <div class="col d-flex justify-content-end mb-2">
+                <a href="{% url 'timer_list' %}" class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Powrót</a>
+            </div>
+        </div>
+        <table class="table borderless">
+            <tbody>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Zapisz">
+                </form>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

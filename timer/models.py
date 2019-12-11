@@ -50,10 +50,12 @@ class CaseTasks(models.Model):
 class Timer(models.Model):
     start_time = models.DateTimeField(default=timezone.now)
     end_time = models.DateTimeField(null=True)
-    pause_time_start = models.DateTimeField(null=True)
-    pause_time_end = models.DateTimeField(null=True)
     added_on = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+    duration = models.DurationField(null=True)
+    pause_active = models.BooleanField(default=False)
+    pause_start_time = models.DateTimeField(null=True)
+    pause_duration_total = models.DurationField(null=True)
     employee = models.ForeignKey(User, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     case = models.ForeignKey(Case, on_delete=models.CASCADE)
@@ -65,5 +67,20 @@ class Timer(models.Model):
                f"and task {self.task}"
 
     @property
-    def duration(self):
-        return (self.end_time - self.start_time) - (self.pause_time_end - self.pause_time_start)
+    def calculate_timer_duration(self):
+        if self.pause_active or self.is_active:
+            raise Exception('timer is active')
+        elif self.pause_duration_total is not None:
+            return self.end_time - self.start_time - self.pause_duration_total
+        else:
+            return self.end_time - self.start_time
+
+
+# @property
+# def duration(self):
+#     if (not (self.pause_active or self.is_active)) and self.pause_time_start is not None:
+#         return (self.end_time - self.start_time) - (self.pause_time_end - self.pause_time_start)
+#     elif not (self.pause_active or self.is_active):
+#         return self.end_time - self.start_time
+#     else:
+#         return 'Aktywny'
