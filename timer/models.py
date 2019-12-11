@@ -74,13 +74,3 @@ class Timer(models.Model):
             return self.end_time - self.start_time - self.pause_duration_total
         else:
             return self.end_time - self.start_time
-
-
-# @property
-# def duration(self):
-#     if (not (self.pause_active or self.is_active)) and self.pause_time_start is not None:
-#         return (self.end_time - self.start_time) - (self.pause_time_end - self.pause_time_start)
-#     elif not (self.pause_active or self.is_active):
-#         return self.end_time - self.start_time
-#     else:
-#         return 'Aktywny'
