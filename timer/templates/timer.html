@@ -6,4 +6,8 @@
     {% include 'timer_active.html' %}
 {% endif %}
 {% endblock %}
+{% block javascript %}
+    {% load static %}
+    <script src={% static 'js/timer.js' %}></script>
+{% endblock %}
 

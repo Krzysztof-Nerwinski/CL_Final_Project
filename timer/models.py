@@ -51,7 +51,7 @@ class Timer(models.Model):
     start_time = models.DateTimeField(default=timezone.now)
     end_time = models.DateTimeField(null=True)
     added_on = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     duration = models.DurationField(null=True)
     pause_active = models.BooleanField(default=False)
     pause_start_time = models.DateTimeField(null=True)
@@ -66,11 +66,10 @@ class Timer(models.Model):
                f"duration {self.duration}, for  {self.client}, by {self.employee} on case {self.case}" \
                f"and task {self.task}"
 
-    @property
     def calculate_timer_duration(self):
         if self.pause_active or self.is_active:
             raise Exception('timer is active')
         elif self.pause_duration_total is not None:
-            return self.end_time - self.start_time - self.pause_duration_total
+            self.duration = self.end_time - self.start_time - self.pause_duration_total
         else:
-            return self.end_time - self.start_time
+            self.duration = self.end_time - self.start_time

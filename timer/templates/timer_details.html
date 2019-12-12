@@ -76,7 +76,11 @@
 
         <div class="row d-flex">
             <div class="col p-4">
+                {% if is_active %}
+                <p>Aktywny</p>
+                {% else %}
                 <p>{{ object.duration }} </p>
+                {% endif %}
             </div>
 {#            <div class="col-2"></div>#}
 {#            <div class="col-5 p-4">#}
