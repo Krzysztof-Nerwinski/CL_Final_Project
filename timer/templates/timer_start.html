@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Start timer{% endblock %}
+{% block content %}
+<div class="dashboard-content border-dashed p-4 m-2">
+    <div id="#timer_start_form">
+        <h1>Timer</h1>
+        <form method="post"> {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Timer Start">
+        </form>
+    </div>
+</div>
+{% block javascript %}
+    {% load static %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src={% static 'js/timer_start.js' %}></script>
+{% endblock %}
+{% endblock %}

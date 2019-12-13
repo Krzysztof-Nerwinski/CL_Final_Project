@@ -2,7 +2,7 @@
 /*---- Main style ----*/
 /*------------------------------*/
 :root {
-  --link-color: #ff6600;
+  --link-color: #f3acad;
   --light-link-color: #fffffa;
   --background-color: #4b4c4a;
   --lighter-background-color: #5a615f;
@@ -26,7 +26,7 @@ html {
 body {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
-  background: repeat url("/static/images/image.png");
+  background: repeat url("/static/images/background.jpg");
 }
 
 li.pg.active {
@@ -467,22 +467,33 @@ margin: 0 auto !important;
   margin-bottom: 50px;
 }
 
-.thumbs-up {
-  background: #ff6600;
-  background-image: url("/static/images/thumbs_up.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+.timer-stop{
   display: inline-block;
+  width: 64px;
+  height: 64px
 }
 
-.thumbs-down {
-  background: #ff6600;
-  background-image: url("/static/images/thumbs_down.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+.timer-pause{
   display: inline-block;
+  width: 64px;
+  height: 64px
+}
+
+.timer-play{
+  width: 64px;
+  height: 64px
+}
+
+.hidden{
+  display: none;
 }
 
 .inline-block {
   display: inline-block;
+}
+
+.edit-data {
+  float: right;
+  display: inline-block;
+  color: blue;
 }

@@ -1,19 +1,54 @@
-<h1>Twój licznik jest aktywny od:
-<h3>{{ timer.start_time }}</h3></h1>
-<ul>
-    <li><h3>Klient:</h3> {{ timer.client }}</li>
-    <li><h3>Projekt:</h3> {{ timer.case }}</li>
-    <li><h3>Zadanie:</h3> {{ timer.task }}</li>
-</ul>
-{% if not timer.pause_active %}
-<a href="{% url 'timer_stop' timer.id %}">
-    <button  class="btn btn-stop" >TIMER STOP</button>
-</a>
-<a href="{% url 'timer_pause' timer.id %}">
-    <button class="btn btn-pause">timer PAUZA</button>
-</a>
-{% else %}
-<a href="{% url 'timer_pause' timer.id%}">
-    <button class="btn btn-resume">timer WZNÓW</button>
-</a>
-{% endif %}
+{% extends 'base.html' %}
+{% block title %}Active timer{% endblock %}
+{% block content %}
+    {% load static %}
+    <div class="dashboard-content border-dashed p-3 m-4">
+            <h2>Twój licznik jest aktywny od:
+            <h4>{{ timer.start_time }}</h4></h2><br>
+            <button style="color: blue" class="edit-data" id="edit_data">zmień dane</button>
+        <div id="active_timer">
+            <p><h3>Klient:</h3> {{ timer.client }} </p>
+            <p><h3>Projekt:</h3> {{ timer.case }} </p>
+            <p><h3>Zadanie:</h3> {{ timer.task }} </p>
+        </div>
+
+        <div id="edit_timer" class="hidden">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Zapisz">
+            </form><br>
+        </div>
+
+        <a href="{% url 'timer_stop' timer.id %}">
+            <img class="timer-stop" src="{% static 'images/buttons/stop.png' %}" alt="STOP">
+        </a>
+        <a href="{% url 'timer_pause' timer.id %}">
+            {% if timer.pause_active %}
+                <img class="timer-pause hidden" src="{% static 'images/buttons/pause.png' %}" alt="PAUZA">
+            {% else %}
+                <img class="timer-pause" src="{% static 'images/buttons/pause.png' %}" alt="PAUZA">
+            {% endif %}
+        </a>
+        <a href="{% url 'timer_pause' timer.id%}">
+            {% if timer.pause_active %}
+            <img class="timer-play" src="{% static 'images/buttons/play.png' %}" alt="PLAY">
+            {% else %}
+            <img class="timer-play hidden" src="{% static 'images/buttons/play.png' %}" alt="PLAY">
+            {% endif %}
+        </a>
+        {% if timer.pause_active %}
+            <div id="pause_counter">
+        {% else %}
+            <div id="pause_counter" class="hidden">
+        {% endif %}
+            <h2>Twój licznik jest wstrzymany od:
+            <h4>{{ timer.pause_start_time }}</h4></h2>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src={% static 'js/timer_is_active.js' %}></script>
+{% endblock %}

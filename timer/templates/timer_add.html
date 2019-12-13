@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Add Timer{% endblock %}
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Dodaj">
-</form>
+<div class="dashboard-content border-dashed p-3 m-4">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Dodaj">
+    </form>
+</div>
 {% endblock %}

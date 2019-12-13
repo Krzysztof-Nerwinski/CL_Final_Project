@@ -1,10 +1,10 @@
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, HiddenInput, DateTimeField
+from django.forms import ModelForm, HiddenInput
 
 from timer.models import Timer
 
 
-class TimerOnForm(ModelForm):
+class TimerStartForm(ModelForm):
     class Meta:
         model = Timer
         fields = ['client', 'case', 'task', 'employee', 'is_active']
@@ -14,17 +14,31 @@ class TimerOnForm(ModelForm):
         widgets = {'employee': HiddenInput,
                    'is_active': HiddenInput}
 
+    def clean(self):
+        cleaned_data = super(TimerStartForm, self).clean()
+        is_active = cleaned_data.get('is_active')
+        #check is active
+        if is_active is False:
+            raise ValidationError('Błąd formularza, is_active == False, nie można wystartować timera')
+        # #check employee_id
+        # employee = cleaned_data.get('employee')
+        # if employee != self.request.user:
+        #     raise ValidationError('Złe id pracownika, nie można zacząc timera dla innego pracownika')
+        #todo: sprawdz czy user == employee
+
 
 class TimerAddForm(ModelForm):
     class Meta:
         model = Timer
         fields = ['start_time', 'end_time', 'duration', 'client', 'case', 'task', 'employee']
-        widgets = {'employee': HiddenInput}
+        widgets = {'employee': HiddenInput,
+                   }
         labels = {'client': 'Klient',
                   'case': 'Projekt',
                   'task': 'Zadanie',
                   'start_time': 'Początek',
-                  'end_time': 'Koniec'}
+                  'end_time': 'Koniec',
+                  'duration': 'Czas (hh:mm:ss)'}
 
     def __init__(self, *args, **kwargs):
         super(TimerAddForm, self).__init__(*args, **kwargs)
@@ -33,25 +47,26 @@ class TimerAddForm(ModelForm):
 
     def clean(self):
         cleaned_data = super(TimerAddForm, self).clean()
-        #check times
-        start_time = cleaned_data.get('start_time')
-        end_time = cleaned_data.get('end_time')
-        duration = cleaned_data.get('duration')
-        if not end_time and not duration:
-            raise ValidationError('Wypełnij czas końcowy timera lub czas trwania')
-        elif end_time and not duration:
-            if end_time < start_time:
-                raise ValidationError('Koniec nie może być wcześniej od początku')
-            else:
-                temp_duration = end_time - start_time
-                cleaned_data['duration'] = temp_duration
-        elif duration and not end_time:
-            temp_end_time = start_time + duration
-            cleaned_data['end_time'] = temp_end_time
+        check_start_end_duration_values(cleaned_data)
+
+
+def check_start_end_duration_values(cleaned_data):
+    start_time = cleaned_data.get('start_time')
+    end_time = cleaned_data.get('end_time')
+    duration = cleaned_data.get('duration')
+    if not end_time and not duration:
+        raise ValidationError('Wypełnij czas końcowy timera lub czas trwania')
+    elif end_time and not duration:
+        if end_time < start_time:
+            raise ValidationError('Koniec nie może być wcześniej od początku')
         else:
-            if end_time - start_time != duration:
-                raise ValidationError('Podano złe dane. Wypełnij czas końcowy timera lub czas trwania')
-        #check user
-        employee = cleaned_data.get('employee')
-        if employee != self.request.user:
-            raise ValidationError('Złe id usera')
+            temp_duration = end_time - start_time
+            cleaned_data['duration'] = temp_duration
+    elif duration and not end_time:
+        temp_end_time = start_time + duration
+        cleaned_data['end_time'] = temp_end_time
+    else:
+        if end_time - start_time != duration:
+            raise ValidationError('Podano złe dane. Wypełnij czas końcowy timera lub czas trwania')
+
+
