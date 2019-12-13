@@ -1,5 +1,6 @@
+from datetimepicker.widgets import DateTimePicker
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, HiddenInput
+from django.forms import ModelForm, HiddenInput, DurationField
 
 from timer.models import Timer
 
@@ -27,12 +28,12 @@ class TimerStartForm(ModelForm):
         #todo: sprawdz czy user == employee
 
 
+
 class TimerAddForm(ModelForm):
     class Meta:
         model = Timer
         fields = ['start_time', 'end_time', 'duration', 'client', 'case', 'task', 'employee']
-        widgets = {'employee': HiddenInput,
-                   }
+        widgets = {'employee': HiddenInput}
         labels = {'client': 'Klient',
                   'case': 'Projekt',
                   'task': 'Zadanie',

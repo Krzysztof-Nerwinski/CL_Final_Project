@@ -4,9 +4,14 @@
     {% load static %}
     <div class="dashboard-content border-dashed p-3 m-4">
             <h2>Twój licznik jest aktywny od:
-            <h4>{{ timer.start_time }}</h4></h2><br>
+            <h4 id="start_time">{{ timer.start_time }}</h4></h2><br>
             <button style="color: blue" class="edit-data" id="edit_data">zmień dane</button>
         <div id="active_timer">
+            {% if timer.duration %}
+                <p id="timer_duration">{{ timer.duration }}</p>
+            {% else %}
+                <p id="timer_duration">Czas trwania: 00:00:00</p>
+            {% endif %}
             <p><h3>Klient:</h3> {{ timer.client }} </p>
             <p><h3>Projekt:</h3> {{ timer.case }} </p>
             <p><h3>Zadanie:</h3> {{ timer.task }} </p>
