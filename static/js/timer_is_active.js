@@ -8,15 +8,15 @@ $(document).ready(() => {
     let start_time = $('#start_time');
     let duration_text = $('#timer_duration');
     moment.locale('pl');
-    duration_text.text(calculateDurationTillNow(start_time))
+    duration_text.text(calculateDurationTillNow(start_time));
 
-
-
-    pause_button.on('click', () => {
-        play_button.removeClass('hidden');
-        pause_div.removeClass('hidden');
-        pause_button.addClass('hidden');
-    });
+    //
+    //
+    // pause_button.on('click', () => {
+    //     play_button.removeClass('hidden');
+    //     pause_div.removeClass('hidden');
+    //     pause_button.addClass('hidden');
+    // });
 
 
     edit_data.on("click", () => {
@@ -31,14 +31,13 @@ $(document).ready(() => {
 
         }
     });
-
-    let duration_refresh_interval = setInterval(function () {
-        let temp_duration_text = calculateDurationTillNow(start_time);
-        duration_text.text(temp_duration_text)
-    }, 1000);
-
-
+    if (play_button.hasClass('hidden')) {
+        let duration_refresh_interval = setInterval(() => {
+            duration_text.text(calculateDurationTillNow(start_time));
+        }, 1000);
+    }
 });
+
 
 function calculateDurationTillNow(start_time) {
     let now = moment();
