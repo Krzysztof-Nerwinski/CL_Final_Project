@@ -9,9 +9,6 @@ class TimerStartForm(ModelForm):
     class Meta:
         model = Timer
         fields = ['client', 'case', 'task', 'employee', 'is_active']
-        labels = {'client': 'Klient',
-                  'case': 'Projekt',
-                  'task': 'Zadanie'}
         widgets = {'employee': HiddenInput,
                    'is_active': HiddenInput}
 
@@ -34,12 +31,7 @@ class TimerAddForm(ModelForm):
         model = Timer
         fields = ['start_time', 'end_time', 'duration', 'client', 'case', 'task', 'employee']
         widgets = {'employee': HiddenInput}
-        labels = {'client': 'Klient',
-                  'case': 'Projekt',
-                  'task': 'Zadanie',
-                  'start_time': 'Początek',
-                  'end_time': 'Koniec',
-                  'duration': 'Czas (hh:mm:ss)'}
+        labels = {'duration': 'Czas trwania (hh:mm:ss)'}
 
     def __init__(self, *args, **kwargs):
         super(TimerAddForm, self).__init__(*args, **kwargs)
