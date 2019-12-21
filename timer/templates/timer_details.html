@@ -43,7 +43,7 @@
                 {% elif timer.pause_active %}
                     <td class="col-7">Przerwa aktywna</td>
                 {% else %}
-                    <td class="col-7">{{ timer.pause_duration_total|cut_microseconds }}</td>
+                    <td class="col-7">{{ timer.pause_duration_total|change_timedelta_format }}</td>
                 {% endif %}
             </tr>
              <tr class="d-flex">
@@ -85,7 +85,7 @@
                 {% if timer.is_active %}
                 <p>Aktywny</p>
                 {% else %}
-                <p>{{ timer.duration|cut_microseconds }} </p>
+                <p>{{ timer.duration|change_timedelta_format }} </p>
                 {% endif %}
             </div>
 {#            <div class="col-2"></div>#}

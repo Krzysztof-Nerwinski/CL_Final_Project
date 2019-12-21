@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import HiddenInput
+from django.http import Http404, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.shortcuts import render, redirect
@@ -99,7 +100,6 @@ class TimerEditView(LoginRequiredMixin, UpdateView):
     model = Timer
     fields = ['start_time', 'end_time', 'client', 'case', 'task']
 
-
     def form_valid(self, form):
         redirect_url = super(TimerEditView, self).form_valid(form)
         start_time = form.cleaned_data.get('start_time')
@@ -143,22 +143,33 @@ def timer_stop(request, timer_id):
             return redirect('timer_details', timer.id)
         else:
             raise Exception('Złe id timera')
+    else:
+        raise Http404('Wrong HTTP method')
 
 
 @login_required
-def timer_pause_toggle(request, timer_id):
+def timer_pause(request, timer_id):
     if request.method == 'GET':
         timer = user_has_active_timer(request)
-        if timer.id == timer_id:
-            if not timer.pause_active:
-                timer.pause_start_time = timezone.now()
-                timer.pause_active = True
-                timer.save()
-                return redirect('timer')
-            else:
-                calculate_pause_time(timer)
-                timer.pause_active = False
-                timer.save()
-                return redirect('timer')
+        if timer.id == timer_id and not timer.pause_active:
+            timer.pause_start_time = timezone.now()
+            timer.pause_active = True
+            timer.save()
+            data = {'pause_from': timer.pause_start_time}
         else:
-            raise Exception('Złe id timera')
+            data = {'error_info': 'Złe id timera'}
+        return JsonResponse(data)
+
+
+@login_required
+def timer_unpause(request, timer_id):
+    if request.method == 'GET':
+        timer = user_has_active_timer(request)
+        if timer.id == timer_id and timer.pause_active:
+            calculate_pause_time(timer)
+            timer.pause_active = False
+            timer.save()
+            data = {'pause_duration': str(timer.pause_duration_total)[:-7]}
+        else:
+            data = {'error_info': 'Złe id timera'}
+        return JsonResponse(data)

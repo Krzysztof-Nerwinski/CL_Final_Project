@@ -3,7 +3,7 @@ from django import template
 register = template.Library()
 
 
-@register.filter(name='cut_microseconds')
+@register.filter(name='change_timedelta_format')
 def smooth_timedelta(timedeltaobj):
     """Convert a datetime.durationfield object into Days, Hours, Minutes, Seconds."""
     secs = timedeltaobj.total_seconds()
@@ -29,3 +29,8 @@ def smooth_timedelta(timedeltaobj):
     if secs > 0:
         timetot += f" {int(secs)}s"
     return timetot
+
+
+@register.filter(name='no_microseconds')
+def no_microseconds(duration):
+    return str(duration)[:-7]

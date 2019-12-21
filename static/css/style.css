@@ -467,19 +467,8 @@ margin: 0 auto !important;
   margin-bottom: 50px;
 }
 
-.timer-stop{
+.timer-buttons{
   display: inline-block;
-  width: 64px;
-  height: 64px
-}
-
-.timer-pause{
-  display: inline-block;
-  width: 64px;
-  height: 64px
-}
-
-.timer-play{
   width: 64px;
   height: 64px
 }

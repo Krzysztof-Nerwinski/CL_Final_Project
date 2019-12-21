@@ -2,12 +2,18 @@
 {% block title %}Active timer{% endblock %}
 {% block content %}
     {% load static %}
+    {% load timer_extras %}
     <div class="dashboard-content border-dashed p-3 m-4">
-            <h2>Twój licznik jest aktywny od:
+    <h2>Twój licznik o id <span id="timer_id">{{ timer.id }}</span> jest aktywny od:
             <h4 id="start_time">{{ timer.start_time|date:'Y-m-d H:i:s' }}</h4></h2><br>
             <button style="color: blue" class="edit-data" id="edit_data">zmień dane</button>
         <div id="active_timer">
             <p>Czas trwania: <span id="timer_duration">0 dni, 00:00:00</span></p>
+            {% if timer.pause_duration_total %}
+                <p>Czas przerw: <span id="timer_pause_duration">{{timer.pause_duration_total|no_microseconds}}</span></p>
+            {% else %}
+                <p>Czas przerw: <span id="timer_pause_duration">Brak przerw</span></p>
+            {% endif %}
             <p><h3>Klient:</h3> {{ timer.client }} </p>
             <p><h3>Projekt:</h3> {{ timer.case }} </p>
             <p><h3>Zadanie:</h3> {{ timer.task }} </p>
@@ -21,30 +27,33 @@
             </form><br>
         </div>
 
-        <a href="{% url 'timer_stop' timer.id %}">
-            <img class="timer-stop" src="{% static 'images/buttons/stop.png' %}" alt="STOP">
-        </a>
-        <a href="{% url 'timer_pause' timer.id %}">
-            {% if timer.pause_active %}
-                <img class="timer-pause hidden" src="{% static 'images/buttons/pause.png' %}" alt="PAUZA">
-            {% else %}
-                <img class="timer-pause" src="{% static 'images/buttons/pause.png' %}" alt="PAUZA">
-            {% endif %}
-        </a>
-        <a href="{% url 'timer_pause' timer.id%}">
-            {% if timer.pause_active %}
-            <img class="timer-play" src="{% static 'images/buttons/play.png' %}" alt="PLAY">
-            {% else %}
-            <img class="timer-play hidden" src="{% static 'images/buttons/play.png' %}" alt="PLAY">
-            {% endif %}
-        </a>
+        <div id="stop_button" class="timer-buttons">
+            <img class="timer-buttons" src="{% static 'images/buttons/stop.png' %}" alt="STOP">
+        </div>
         {% if timer.pause_active %}
-            <div id="pause_counter">
+        <div id="pause_button" class="timer-buttons hidden">
         {% else %}
-            <div id="pause_counter" class="hidden">
+        <div id="pause_button" class="timer-buttons">
         {% endif %}
-            <h2>Twój licznik jest wstrzymany od:
-            <h4>{{ timer.pause_start_time }}</h4></h2>
+        <img class="timer-buttons" src="{% static 'images/buttons/pause.png' %}" alt="PAUZA">
+        </div>
+
+        {% if timer.pause_active %}
+        <div id="play_button" class="timer-buttons">
+        {% else %}
+        <div id="play_button" class="timer-buttons hidden">
+        {% endif %}
+        <img class="timer-buttons" src="{% static 'images/buttons/play.png' %}" alt="PLAY">
+        </div>
+
+        {% if timer.pause_active %}
+        <div id="pause_counter">
+        {% else %}
+        <div id="pause_counter" class="hidden">
+        {% endif %}
+            <h2>Ostatnia przerwa trwa od:
+            <h4 id="timer_pause_from">{{ timer.pause_start_time|date:'Y-m-d H:i:s' }}</h4>
+            </h2>
         </div>
     </div>
 </div>

@@ -21,3 +21,4 @@ def calculate_pause_time(timer):
     else:
         timer.pause_duration_total = timezone.now() - timer.pause_start_time
     return timer
+
