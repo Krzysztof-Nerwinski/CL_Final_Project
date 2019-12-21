@@ -9,3 +9,8 @@
     </form>
 </div>
 {% endblock %}
+{% block javascript %}
+{% load static %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src={% static 'js/timer_add.js' %}></script>
+{% endblock %}

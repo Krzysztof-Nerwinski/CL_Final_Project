@@ -9,16 +9,18 @@
 {#    {% endfor %}#}
 {#{% endblock %}#}
 {% extends "base.html" %}
-{% block title %}Timer id - {{ object.id }}{% endblock %}
+{% block title %}Timer id - {{ timer.id }}{% endblock %}
 {% block content %}
 {% load timer_extras %}
 <div class="dashboard-content border-dashed p-3 m-4 view-height">
     <div class="mt-4 ml-4 mr-4">
         <div class="row border-bottom border-3">
-            <div class="col"><h3 class="color-header text-uppercase">Timer id - {{ object.id }}</h3></div>
+            <div class="col"><h3 class="color-header text-uppercase">Timer id - {{ timer.id }}</h3></div>
             <div class="col d-flex justify-content-end mb-2">
-                <a href="{% url 'timer_delete' object.id %}" class="btn btn-danger rounded-0 pt-0 pb-0 pr-4 pl-4 mr-1">Usuń wpis</a>
-                <a href="{% url 'timer_edit' object.id %}" class="btn btn-warning rounded-0 pt-0 pb-0 pr-4 pl-4 mr-1">Edytuj wpis</a>
+                <a href="{% url 'timer_delete' timer.id %}" class="btn btn-danger rounded-0 pt-0 pb-0 pr-4 pl-4 mr-1">Usuń wpis</a>
+                {% if not timer.is_active %}
+                    <a href="{% url 'timer_edit' timer.id %}" class="btn btn-warning rounded-0 pt-0 pb-0 pr-4 pl-4 mr-1">Edytuj wpis</a>
+                {% endif %}
                 <a href="{% url 'timer_list' %}" class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Powrót</a>
             </div>
         </div>
@@ -26,39 +28,39 @@
             <tbody>
             <tr class="d-flex">
                 <th scope="row" class="col-2">Początek</th>
-                <td class="col-7">{{ object.start_time }}</td>
+                <td class="col-7">{{ timer.start_time|date:'d M Y H:i:s' }}</td>
             </tr>
-            {% if not object.is_active %}
+            {% if not timer.is_active %}
             <tr class="d-flex">
                 <th scope="row" class="col-2">Koniec</th>
-                <td class="col-7">{{ object.end_time }}</td>
+                <td class="col-7">{{ timer.end_time|date:'d M Y H:i:s' }}</td>
             </tr>
             {% endif %}
             <tr class="d-flex">
                 <th scope="row" class="col-2">Czas przerw:</th>
-                {% if not object.pause_duration_total and not object.pause_active %}
+                {% if not timer.pause_duration_total and not timer.pause_active %}
                     <td class="col-7">Brak przerw</td>
-                {% elif object.pause_active %}
+                {% elif timer.pause_active %}
                     <td class="col-7">Przerwa aktywna</td>
                 {% else %}
-                    <td class="col-7">{{ object.pause_duration_total|cut_microseconds }}</td>
+                    <td class="col-7">{{ timer.pause_duration_total|cut_microseconds }}</td>
                 {% endif %}
             </tr>
              <tr class="d-flex">
                 <th scope="row" class="col-2">Klient</th>
-                 <td class="col-7">{{ object.client }}</td>
+                 <td class="col-7">{{ timer.client }}</td>
             </tr>
             <tr class="d-flex">
                 <th scope="row" class="col-2">Projekt</th>
-                 <td class="col-7">{{ object.case }}</td>
+                 <td class="col-7">{{ timer.case }}</td>
             </tr>
             <tr class="d-flex">
                 <th scope="row" class="col-2">Zadanie</th>
-                 <td class="col-7">{{ object.task }}</td>
+                 <td class="col-7">{{ timer.task }}</td>
             </tr>
             <tr class="d-flex">
                 <th scope="row" class="col-2">Data utworzenia</th>
-                 <td class="col-7">{{ object.added_on }}</td>
+                 <td class="col-7">{{ timer.added_on }}</td>
             </tr>
 
 
@@ -80,18 +82,18 @@
 
         <div class="row d-flex">
             <div class="col p-4">
-                {% if object.is_active %}
+                {% if timer.is_active %}
                 <p>Aktywny</p>
                 {% else %}
-                <p>{{ object.duration|cut_microseconds }} </p>
+                <p>{{ timer.duration|cut_microseconds }} </p>
                 {% endif %}
             </div>
 {#            <div class="col-2"></div>#}
 {#            <div class="col-5 p-4">#}
-{#                <p>{{ object.pause_duration_total }} </p>#}
+{#                <p>{{ timer.pause_duration_total }} </p>#}
 {#            </div>#}
 {#            <div class="col-5 p-4">#}
-{#                <p>{{ object.duration }} </p>#}
+{#                <p>{{ timer.duration }} </p>#}
 {#            </div>#}
         </div>
     </div>

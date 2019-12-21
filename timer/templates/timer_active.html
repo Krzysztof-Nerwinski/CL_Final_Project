@@ -4,9 +4,10 @@
     {% load static %}
     <div class="dashboard-content border-dashed p-3 m-4">
             <h2>Twój licznik jest aktywny od:
-            <h4>{{ timer.start_time }}</h4></h2><br>
+            <h4 id="start_time">{{ timer.start_time|date:'Y-m-d H:i:s' }}</h4></h2><br>
             <button style="color: blue" class="edit-data" id="edit_data">zmień dane</button>
         <div id="active_timer">
+            <p>Czas trwania: <span id="timer_duration">0 dni, 00:00:00</span></p>
             <p><h3>Klient:</h3> {{ timer.client }} </p>
             <p><h3>Projekt:</h3> {{ timer.case }} </p>
             <p><h3>Zadanie:</h3> {{ timer.task }} </p>
@@ -50,5 +51,6 @@
 {% endblock %}
 {% block javascript %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="{% static 'js/moment-with-locales.min.js' %}"></script>
     <script src={% static 'js/timer_is_active.js' %}></script>
 {% endblock %}

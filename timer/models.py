@@ -48,18 +48,20 @@ class CaseTasks(models.Model):
 
 
 class Timer(models.Model):
-    start_time = models.DateTimeField(default=timezone.now)
-    end_time = models.DateTimeField(null=True)
-    added_on = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ['-end_time']
+    start_time = models.DateTimeField(default=timezone.now, verbose_name='Początek')
+    end_time = models.DateTimeField(null=True, verbose_name='Koniec')
+    added_on = models.DateTimeField(auto_now_add=True, verbose_name='Data utworzenia')
     is_active = models.BooleanField(default=False)
-    duration = models.DurationField(null=True)
+    duration = models.DurationField(null=True, verbose_name='Czas trwania')
     pause_active = models.BooleanField(default=False)
     pause_start_time = models.DateTimeField(null=True)
-    pause_duration_total = models.DurationField(null=True)
+    pause_duration_total = models.DurationField(null=True, verbose_name='Czas przerw')
     employee = models.ForeignKey(User, on_delete=models.CASCADE)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    case = models.ForeignKey(Case, on_delete=models.CASCADE)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='Klient')
+    case = models.ForeignKey(Case, on_delete=models.CASCADE, verbose_name='Projekt')
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name='Zadanie')
 
     def __str__(self):
         return f"Timer no {self.id}, started on {self.start_time}, finished on {self.end_time}," \

@@ -92,11 +92,13 @@ class TimerListView(LoginRequiredMixin, ListView):
 
 class TimerDetailedView(LoginRequiredMixin, DetailView):
     model = Timer
+    context_object_name = 'timer'
 
 
 class TimerEditView(LoginRequiredMixin, UpdateView):
     model = Timer
     fields = ['start_time', 'end_time', 'client', 'case', 'task']
+
 
     def form_valid(self, form):
         redirect_url = super(TimerEditView, self).form_valid(form)
