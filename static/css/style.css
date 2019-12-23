@@ -470,7 +470,11 @@ margin: 0 auto !important;
 .timer-buttons{
   display: inline-block;
   width: 64px;
-  height: 64px
+  height: 64px;
+}
+
+.timer-buttons:hover {
+  cursor: pointer;
 }
 
 .hidden{

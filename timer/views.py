@@ -135,7 +135,7 @@ def timer_stop(request, timer_id):
         if timer.id == timer_id:
             if timer.pause_active:
                 timer.pause_active = False
-                calculate_pause_time(timer)
+                timer = calculate_pause_time(timer)
             timer.is_active = False
             timer.end_time = timezone.now()
             timer.calculate_timer_duration()
@@ -166,7 +166,7 @@ def timer_unpause(request, timer_id):
     if request.method == 'GET':
         timer = user_has_active_timer(request)
         if timer.id == timer_id and timer.pause_active:
-            calculate_pause_time(timer)
+            timer = calculate_pause_time(timer)
             timer.pause_active = False
             timer.save()
             data = {'pause_duration': str(timer.pause_duration_total)[:-7]}

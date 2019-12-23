@@ -28,7 +28,9 @@
         </div>
 
         <div id="stop_button" class="timer-buttons">
-            <img class="timer-buttons" src="{% static 'images/buttons/stop.png' %}" alt="STOP">
+            <a href="{% url 'timer_stop' timer.id %}">
+                <img class="timer-buttons" src="{% static 'images/buttons/stop.png' %}" alt="STOP">
+            </a>
         </div>
         {% if timer.pause_active %}
         <div id="pause_button" class="timer-buttons hidden">
