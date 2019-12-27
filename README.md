@@ -11,8 +11,7 @@ Core functions:
 </ul>
 Planned features:
 <ul>
-  <li>user management
-  <li>customer, project and task management
+  <li>user, customer, project and task management
   <li>user, customer, project and task statistics
 </ul>
 
