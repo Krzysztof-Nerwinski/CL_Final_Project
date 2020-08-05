@@ -151,11 +151,14 @@ def timer_stop(request, timer_id):
 def timer_pause(request, timer_id):
     if request.method == 'GET':
         timer = user_has_active_timer(request)
-        if timer.id == timer_id and not timer.pause_active:
-            timer.pause_start_time = timezone.now()
-            timer.pause_active = True
-            timer.save()
-            data = {'pause_from': timer.pause_start_time}
+        if timer.id == timer_id:
+            if not timer.pause_active:
+                timer.pause_start_time = timezone.now()
+                timer.pause_active = True
+                timer.save()
+                data = {'pause_from': timer.pause_start_time}
+            else:
+                data = {'error_info': 'Timer nie jest aktywny'}
         else:
             data = {'error_info': 'Złe id timera'}
         return JsonResponse(data)
@@ -165,11 +168,14 @@ def timer_pause(request, timer_id):
 def timer_unpause(request, timer_id):
     if request.method == 'GET':
         timer = user_has_active_timer(request)
-        if timer.id == timer_id and timer.pause_active:
-            timer = calculate_pause_time(timer)
-            timer.pause_active = False
-            timer.save()
-            data = {'pause_duration': str(timer.pause_duration_total)[:-7]}
+        if timer.id == timer_id:
+            if timer.pause_active:
+                timer = calculate_pause_time(timer)
+                timer.pause_active = False
+                timer.save()
+                data = {'pause_duration': str(timer.pause_duration_total)[:-7]}
+            else:
+                data = {'error_info': 'Timer nie jest wstrzymany'}
         else:
             data = {'error_info': 'Złe id timera'}
         return JsonResponse(data)

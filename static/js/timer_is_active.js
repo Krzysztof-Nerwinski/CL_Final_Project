@@ -12,14 +12,17 @@ $(document).ready(() => {
     let timer_id = $('#timer_id');
     let pause_duration = $('#timer_pause_duration');
     let pause_from = $('#timer_pause_from');
+    let duration_refresh_interval = undefined;
+
 
     if (pause_div.hasClass('hidden')) {
         insertDurationTime(duration_text, start_time, pause_duration, null);
+        duration_refresh_interval = timerStartStop(pause_div, duration_text, start_time, pause_duration);
+
     } else {
-        insertDurationTime(duration_text,start_time, pause_duration, pause_from);
+        insertDurationTime(duration_text, start_time, pause_duration, pause_from);
     }
 
-    let duration_refresh_interval = timerStartStop(pause_div, duration_text, start_time, pause_duration);
 
     stop_button.on("click", function (e) {
         e.preventDefault();
@@ -58,7 +61,7 @@ $(document).ready(() => {
                     play_button.removeClass('hidden');
                     pause_div.removeClass('hidden');
                     pause_button.addClass('hidden');
-                    let data_pause_from = moment(data.pause_from).format( 'YYYY-MM-DD HH:mm:ss');
+                    let data_pause_from = moment(data.pause_from).format('YYYY-MM-DD HH:mm:ss');
                     pause_from.text(data_pause_from);
                     timerStartStop(pause_div, duration_text, start_time, pause_duration, duration_refresh_interval)
                 }
@@ -88,11 +91,7 @@ $(document).ready(() => {
 });
 
 function insertDurationTime(duration_text, start_time, pause_duration, pause_from) {
-    if (pause_duration === null) {
-        duration_text.text(calculateDurationTillNow( start_time,null, pause_from))
-    } else {
-        duration_text.text(calculateDurationTillNow(start_time, pause_duration, null));
-    }
+    duration_text.text(calculateDurationTillNow(start_time, pause_duration, pause_from))
 }
 
 function calculateDurationTillNow(started_on, pause_duration, pause_from = null) {
@@ -104,9 +103,9 @@ function calculateDurationTillNow(started_on, pause_duration, pause_from = null)
         now = now.subtract(pause_duration);
         diff = now.diff(started_on);
     } else {
-        pause_from = moment(pause_from.text());
-        pause_from = pause_from.subtract(pause_duration)
-        diff = pause_from.diff(started_on)
+        pause_from = moment(pause_from.text(), 'YYYY-MM-DD HH:mm:ss');
+        diff = pause_from.subtract(pause_duration)
+        diff = diff.diff(started_on)
     }
     let diffDuration = moment.duration(diff);
     let days = diffDuration.days();
